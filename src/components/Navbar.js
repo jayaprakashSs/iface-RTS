@@ -1,53 +1,119 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { AiOutlineLogout } from "react-icons/ai"; // Importing Logout icon
-import { BsFillPersonFill, BsFillGearFill } from "react-icons/bs"; // Profile and Settings icons
-import logo from "../assets/logo.jpg"; // Importing the local image logo
+import React, { useState } from "react";
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   const handleLogout = () => {
-    // Handle logout functionality
-    navigate("/");
+    // Add your logout logic here (e.g., clear session, redirect, etc.)
+    console.log("Logged out");
+    // For example, redirect to login page:
+    // window.location.href = "/login";
   };
 
   return (
-    <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 p-4 shadow-lg flex items-center justify-between">
-      {/* Logo and Admin Panel Section */}
-      <div className="flex items-center space-x-6">
-        <img src={logo} alt="Logo" className="w-04 h-14" /> {/* Increased Logo Size */}
-        <div className="text-white text-2xl font-bold">Admin Panel</div>
+    <nav className="bg-indigo-800 text-white px-6 py-4 shadow-md flex justify-between items-center">
+      <div className="flex items-center space-x-4">
+        {/* Logo */}
+        <h1 className="text-2xl font-bold">iface v.2</h1>
       </div>
 
-      {/* Right-aligned Navbar Items */}
-      <div className="flex items-center space-x-8">
-        {/* Profile Section */}
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gray-300 rounded-full flex justify-center items-center">
-            <BsFillPersonFill className="text-white" size={20} />
-          </div>
-          <span className="text-white font-medium">John Doe</span>
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center space-x-6">
+        {/* Search Bar */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="px-4 py-2 rounded-md text-sm bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
         </div>
 
-        {/* Settings Icon */}
-        <button
-          onClick={() => navigate("/dashboard/settings")}
-          className="text-white hover:text-gray-300 transition duration-200"
-        >
-          <BsFillGearFill size={24} />
-        </button>
+        {/* Filter Option */}
+        <select className="px-4 py-2 bg-gray-700 text-white rounded-md">
+          <option value="all">All Users</option>
+          <option value="active">Active Users</option>
+          <option value="inactive">Inactive Users</option>
+        </select>
 
-        {/* Logout Button */}
+        {/* Admin Profile Dropdown */}
+        <div className="relative">
+          <button
+            onClick={toggleDropdown}
+            className="flex items-center space-x-2 hover:text-gray-300"
+          >
+            <i className="fas fa-user-circle text-xl"></i>
+            <span>Admin</span>
+          </button>
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-gray-800 text-white shadow-md rounded-md">
+              <ul>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-700 transition-all duration-200"
+                  >
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-700 transition-all duration-200"
+                  >
+                    Settings
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-700 transition-all duration-200"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Menu Button */}
+      <div className="md:hidden flex items-center">
         <button
-          onClick={handleLogout}
-          className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200"
+          onClick={toggleMobileMenu}
+          className="text-white hover:text-gray-300 focus:outline-none"
         >
-          <AiOutlineLogout size={20} />
-          <span>Logout</span>
+          <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
         </button>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="absolute top-0 right-0 w-full bg-indigo-800 text-white p-4 md:hidden">
+          <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+            Dashboard
+          </a>
+          <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+            Profile
+          </a>
+          <button
+            onClick={handleLogout}
+            className="block py-2 px-4 w-full text-left hover:bg-gray-700"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </nav>
   );
 };
 

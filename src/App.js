@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 function App() {
   return (

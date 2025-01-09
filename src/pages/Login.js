@@ -1,77 +1,90 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "animate.css"; // Importing animate.css for background animation effects
 
 const Login = () => {
-  const [mobile, setMobile] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [otp, setOtp] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const staticMobile = "1234567890";
-    const staticOtp = "1234";
+    // Static mobile number and OTP for validation (replace with your logic)
+    const staticMobileNumber = "1234567890";
+    const staticOtp = "123456";
 
-    if (mobile === staticMobile && otp === staticOtp) {
+    if (mobileNumber === staticMobileNumber && otp === staticOtp) {
+      setErrorMessage(""); // Clear error message on successful login
       navigate("/dashboard");
     } else {
-      alert("Invalid Mobile Number or OTP");
+      setErrorMessage("Invalid Mobile Number or OTP"); // Set error message if validation fails
     }
   };
 
   return (
-    <div
-      className="h-screen flex items-center justify-center animate__animated animate__fadeIn animate__delay-0.5s"
-      style={{
-        backgroundImage: "url('https://images.pexels.com/photos/2120435/pexels-photo-2120435.jpeg')", 
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat", // Ensures the image doesn't repeat
-      }}
-    >
-      {/* Login Form Container with Zoom-in Animation */}
-      <div className="bg-white shadow-xl rounded-lg p-12 w-full max-w-md animate__animated animate__zoomIn animate__delay-0.5s">
-        <div className="text-center mb-6">
-          <h2 className="text-4xl font-bold text-gray-800">iface login</h2>
-          <p className="text-lg text-gray-600">Please enter your mobile number and OTP to login.</p>
+    <div className="min-h-[100vh] bg-gray-100 text-gray-900 flex justify-center items-center overflow-hidden">
+      <div className="max-w-screen-lg m-0 sm:m-8 bg-white shadow sm:rounded-lg flex justify-between flex-1">
+        {/* Background Image Section */}
+        <div className="flex-1 bg-green-100 text-center hidden lg:flex">
+          <div
+            className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/background.svg')", // Background image reference
+            }}
+          ></div>
         </div>
 
-        {/* Mobile Number Input */}
-        <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-medium mb-2">Mobile Number</label>
-          <input
-            type="text"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            placeholder="Enter mobile number"
-            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out animate__animated animate__zoomIn animate__delay-1s"
-          />
-        </div>
+        {/* Login Form Section */}
+        <div className="lg:w-1/3 xl:w-4/12 p-4 sm:p-8 flex flex-col justify-center items-center">
+          {/* Logo first */}
+          <div>
+            <img
+              src="/iface_v.2.png" // Local image reference
+              alt="Logo"
+              className="w-3/4 mx-auto mb-4"
+            />
+          </div>
 
-        {/* OTP Input */}
-        <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-medium mb-2">OTP</label>
-          <input
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            placeholder="Enter OTP"
-            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out animate__animated animate__zoomIn animate__delay-1s"
-          />
-        </div>
+          {/* Login Heading */}
+          <h1 className="text-xl font-semibold text-center text-gray-800 mb-4">
+            Login to Your Account
+          </h1>
 
-        {/* Login Button */}
-        <button
-          onClick={handleLogin}
-          className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out font-semibold animate__animated animate__fadeInUp animate__delay-2s"
-        >
-          Login
-        </button>
+          <div className="mt-4 flex flex-col items-center w-full">
+            <div className="w-full flex-1 mt-4">
+              {/* Mobile Number and OTP Inputs */}
+              <div className="mx-auto max-w-xs">
+                <input
+                  className="w-full px-6 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-base focus:outline-none focus:border-gray-400 focus:bg-white"
+                  type="text"
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
+                  placeholder="Mobile Number"
+                />
+                <input
+                  className="w-full px-6 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-base focus:outline-none focus:border-gray-400 focus:bg-white mt-4"
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="OTP"
+                />
+              </div>
 
-        {/* Forgot Password Link */}
-        <div className="text-center mt-4">
-          <a href="" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
-            Forgot your password?
-          </a>
+              {/* Show error message if login fails */}
+              {errorMessage && (
+                <div className="mt-3 text-red-500 text-center">
+                  <p>{errorMessage}</p>
+                </div>
+              )}
+
+              {/* Sign In Button */}
+              <button
+                onClick={handleLogin}
+                className="mx-auto max-w-xs mt-4 tracking-wide font-semibold bg-green-400 text-white w-full py-3 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none text-base"
+              >
+                <span className="ml-3">Sign In</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
